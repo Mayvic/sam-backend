@@ -44,7 +44,7 @@ export default class AlunosController {
   public async show({ auth, request }: HttpContextContract) {
       const user = auth.user!;
       const id = user.type == 0 ? user.id : request.param('id');
-      const aluno = await Aluno.findBy('user_id', id);
+      const aluno = await Aluno.findByOrFail('user_id', id);
       await aluno.load('user');
       
       if (user.type === 0) {
