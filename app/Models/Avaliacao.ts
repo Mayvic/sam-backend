@@ -8,11 +8,20 @@ export default class Avaliacao extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public alunoId: number
+
   @belongsTo(() => Aluno)
   public aluno: BelongsTo<typeof Aluno>
+  
+  @column()
+  public materiaId: number
 
   @belongsTo(() => Materia)
   public materia: BelongsTo<typeof Materia>
+  
+  @column()
+  public professorId: number
 
   @belongsTo(() => Professor)
   public professor: BelongsTo<typeof Professor>
@@ -29,7 +38,7 @@ export default class Avaliacao extends BaseModel {
   public ementa: number
   
   @column()
-  public distribuição: number
+  public distribuicao: number
   
   @column()
   public material: number
@@ -75,7 +84,7 @@ export default class Avaliacao extends BaseModel {
   public entendimento: number
 
   @column()
-  public esforço: number
+  public esforco: number
 
   @column()
   public preReq: number

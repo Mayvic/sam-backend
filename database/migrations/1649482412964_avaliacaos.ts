@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Avaliacaos extends BaseSchema {
-  protected tableName = 'avaliacoes'
+  protected tableName = 'avaliacaos'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
@@ -16,7 +16,7 @@ export default class Avaliacaos extends BaseSchema {
       table.integer('clareza')
       table.integer('relevancia')
       table.integer('ementa')
-      table.integer('distribuição')
+      table.integer('distribuicao')
       table.integer('material')
       table.integer('lab')
       table.integer('dificuldade')
@@ -31,15 +31,15 @@ export default class Avaliacaos extends BaseSchema {
       table.integer('indicaria')
 
       // sobre o ALUNO
-      table.integer('primeiraVez')
+      table.integer('primeira_vez')
       table.integer('frequencia')
       table.integer('entendimento')
-      table.integer('esforço')
-      table.integer('pre-req')
+      table.integer('esforco')
+      table.integer('pre_req')
       table.integer('area')
       table.integer('conhecimento')
 
-      table.text('comentarios')
+      table.text('comentarios').nullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

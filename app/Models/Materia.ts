@@ -22,6 +22,9 @@ export default class Materia extends BaseModel {
   @column()
   public periodo: string
 
+  @column()
+  public professorId: number
+
   @belongsTo(() => Professor)
   public professor: BelongsTo<typeof Professor>
 

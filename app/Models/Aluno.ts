@@ -9,8 +9,14 @@ export default class Aluno extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public userId: number
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+
+  @column()
+  public isValid: boolean
 
   @manyToMany(() => Materia)
   public materias: ManyToMany<typeof Materia>
