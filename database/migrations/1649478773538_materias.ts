@@ -11,7 +11,7 @@ export default class Materias extends BaseSchema {
       table.string('codigo').notNullable()
       table.string('codigo_entrada').notNullable()
       table.string('periodo').notNullable()
-      table.string('professor').notNullable()
+      table.integer('professor_id').unsigned().references('professors.id').onDelete('CASCADE')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

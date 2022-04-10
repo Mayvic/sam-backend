@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import Professor from 'App/Models/Professor'
+
 
 export default class Materia extends BaseModel {
   @column({ isPrimary: true })
@@ -20,8 +22,8 @@ export default class Materia extends BaseModel {
   @column()
   public periodo: string
 
-  @column()
-  public professor: string
+  @belongsTo(() => Professor)
+  public professor: BelongsTo<typeof Professor>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
