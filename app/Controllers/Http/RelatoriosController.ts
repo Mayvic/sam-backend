@@ -17,6 +17,18 @@ export default class RelatoriosController {
     }); 
   }
 
+  public async get({ request }: HttpContextContract) {
+    const id = request.param('id');
+    const materia = await Materia.findOrFail(id);
+    let avaliacoes = await Avaliacao.all();
+    avaliacoes = avaliacoes.filter((av) => av.materiaId === materia.id)
+    
+    return {
+      materiaId: materia.id,
+      ...this.constructMiniReport(avaliacoes)
+    };
+  }
+
   private countQuestion(avaliacoes: Avaliacao[], question: string) {
     if (avaliacoes.length === 0) {
       return {

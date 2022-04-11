@@ -46,7 +46,11 @@ Route.group(() => { // evaluation
 }).prefix('evaluation').middleware('auth');
 
 Route.group(() => { // materia
-  Route.get('/', 'MateriasController.index'); // pegar materias (não avaliadas) 
+  Route.get('/', 'MateriasController.index'); // pegar materias
+  Route.get('nao_avaliadas', 'MateriasController.filtered'); // pegar materias (não avaliadas)
 }).prefix('materias').middleware('auth');
 
-Route.get('report', 'RelatoriosController.index').middleware('auth');
+Route.group(() => { // relatorio
+  Route.get('/', 'RelatoriosController.index');
+  Route.get(':id', 'RelatoriosController.get');
+}).prefix('report').middleware('auth');
