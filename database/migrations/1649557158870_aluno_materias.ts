@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class AlunoMaterias extends BaseSchema {
-  protected tableName = 'aluno_materias'
+  protected tableName = 'aluno_materia'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {

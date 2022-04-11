@@ -20,6 +20,20 @@ export default class ProfessorSeeder extends BaseSeeder {
         type: 2,
         password: 'senha',
       },
+      {
+        name: 'Duarte',
+        document: '123456',
+        email: 'duarte@email.com',
+        type: 1,
+        password: 'senha',
+      },
+      {
+        name: 'Posner',
+        document: '123456',
+        email: 'posner@email.com',
+        type: 1,
+        password: 'senha',
+      },
     ]);
     
     for (const i in users) {

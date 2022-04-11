@@ -40,7 +40,7 @@ export default class LoginValidator {
    *
    */
   public messages = {
-    required: '{{ field }} is required to sign up.',
+    required: '{{ field }} is required to sign in.',
     'email.email': '{{ field }} must be a valid email.'
   }
 }
