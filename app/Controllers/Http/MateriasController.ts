@@ -12,6 +12,7 @@ export default class MateriasController {
 
         const materias = aluno.materias.filter((materia) => !materiasAvaliadas.includes(materia.id))
         await Promise.all(materias.map((materia) => materia.load('professor')))
+        await Promise.all(materias.map((materia) => materia.professor.load('user')))
         return materias.map((materia) => materia.serialize())
     }
 }
