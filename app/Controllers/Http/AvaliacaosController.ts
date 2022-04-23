@@ -25,6 +25,13 @@ export default class AvaliacaosController {
     const id = auth.user!.id;
     const aluno = await Aluno.findByOrFail('user_id', id);
     const materia = await Materia.findOrFail(request.input('materiaId'));
+    const codigo_entrada = request.input('codigo');
+    if (materia.codigo_entrada !== codigo_entrada) {
+      return response.badRequest({
+        error: 'codigo de entrada não confere.'
+      });
+    }
+
     await materia.load('professor')
 
     const avaliacao = {

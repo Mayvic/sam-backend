@@ -40,6 +40,10 @@ Route.group(() => { // student
   Route.post('create', 'AlunosController.create'); // create new student
 }).prefix('student');
 
+Route.group(() => { // professor
+  Route.get('/', 'ProfessorsController.index');
+}).prefix('professor').middleware('auth');
+
 Route.group(() => { // evaluation
   Route.get('/', 'AvaliacaosController.index'); // get all evaluations
   Route.post('create', 'AvaliacaosController.create'); // create new evaluation
@@ -47,7 +51,7 @@ Route.group(() => { // evaluation
 
 Route.group(() => { // materia
   Route.get('/', 'MateriasController.index'); // pegar materias
-  Route.get('nao_avaliadas', 'MateriasController.filtered'); // pegar materias (não avaliadas)
+  Route.post('/', 'MateriasController.create'); // criar materia
 }).prefix('materias').middleware('auth');
 
 Route.group(() => { // relatorio
