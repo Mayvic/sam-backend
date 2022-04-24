@@ -68,7 +68,8 @@ export default class RelatoriosController {
   }
 
   private constructMiniReport(avaliacoes: Avaliacao[]) {
-    const a = {
+    return {
+      count: avaliacoes.length,
       materia: {
         clareza: this.countQuestion(avaliacoes, 'clareza'),
         relevancia: this.countQuestion(avaliacoes, 'relevancia'),
@@ -101,6 +102,5 @@ export default class RelatoriosController {
 
       comentarios: this.groupComments(avaliacoes)
     };
-    return a;
   }
 }
