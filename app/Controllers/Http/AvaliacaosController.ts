@@ -62,7 +62,7 @@ export default class AvaliacaosController {
       frequencia: request.input('aluno.frequencia'),
       entendimento: request.input('aluno.entendimento'),
       esforco: request.input('aluno.esforco'),
-      pre_req: request.input('aluno.pre_req'),
+      pre_req: request.input('aluno.preReq'),
       area: request.input('aluno.area'),
       conhecimento: request.input('aluno.conhecimento'),
 

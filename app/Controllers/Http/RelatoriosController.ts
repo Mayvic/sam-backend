@@ -21,8 +21,7 @@ export default class RelatoriosController {
     const id = request.param('id');
     const materia = await Materia.findOrFail(id);
     let avaliacoes = await Avaliacao.all();
-    avaliacoes = avaliacoes.filter((av) => av.materiaId === materia.id)
-    
+    avaliacoes = avaliacoes.filter((av) => av.materiaId === materia.id);
     return {
       materiaId: materia.id,
       ...this.constructMiniReport(avaliacoes)
@@ -52,12 +51,12 @@ export default class RelatoriosController {
       }
     }).reduce((previous, current) => {
       return {
-        0: previous[question] + current[question],
-        1: previous[question] + current[question],
-        2: previous[question] + current[question],
-        3: previous[question] + current[question],
-        4: previous[question] + current[question],
-        5: previous[question] + current[question]
+        0: previous[0] + current[0],
+        1: previous[1] + current[1],
+        2: previous[2] + current[2],
+        3: previous[3] + current[3],
+        4: previous[4] + current[4],
+        5: previous[5] + current[5]
       }
     });
   }
@@ -69,7 +68,7 @@ export default class RelatoriosController {
   }
 
   private constructMiniReport(avaliacoes: Avaliacao[]) {
-    return {
+    const a = {
       materia: {
         clareza: this.countQuestion(avaliacoes, 'clareza'),
         relevancia: this.countQuestion(avaliacoes, 'relevancia'),
@@ -91,16 +90,17 @@ export default class RelatoriosController {
       },
 
       aluno: {
-        primeira_vez: this.countQuestion(avaliacoes, 'primeira_vez'),
+        primeira_vez: this.countQuestion(avaliacoes, 'primeiraVez'),
         frequencia: this.countQuestion(avaliacoes, 'frequencia'),
         entendimento: this.countQuestion(avaliacoes, 'entendimento'),
         esforco: this.countQuestion(avaliacoes, 'esforco'),
-        pre_req: this.countQuestion(avaliacoes, 'pre_req'),
+        pre_req: this.countQuestion(avaliacoes, 'preReq'),
         area: this.countQuestion(avaliacoes, 'area'),
         conhecimento: this.countQuestion(avaliacoes, 'conhecimento')
       },
 
       comentarios: this.groupComments(avaliacoes)
     };
+    return a;
   }
 }
