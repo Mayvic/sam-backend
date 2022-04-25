@@ -6,7 +6,6 @@
  */
 
 import Bouncer from '@ioc:Adonis/Addons/Bouncer'
-import Aluno from 'App/Models/Aluno'
 import Materia from 'App/Models/Materia'
 import Professor from 'App/Models/Professor'
 import User from 'App/Models/User'
@@ -33,9 +32,7 @@ import User from 'App/Models/User'
 | NOTE: Always export the "actions" const from this file
 |****************************************************************
 */
-export const { actions } = Bouncer
-
-Bouncer.define('updateStudentSelf', (user: User) => {
+export const { actions } = Bouncer.define('updateStudentSelf', (user: User) => {
     return user.type === 0;
 })
 .define('viewStudentSelf', (user: User) => {

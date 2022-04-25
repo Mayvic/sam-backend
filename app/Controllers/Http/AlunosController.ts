@@ -60,7 +60,7 @@ export default class AlunosController {
   }
 
   public async destroy({ auth, bouncer }: HttpContextContract) {
-    await bouncer.authorize('destroyStudentSelf');
+    await bouncer.authorize('deleteStudentSelf');
     const aluno = await Aluno.findOrFail(auth.user!.id);
     await aluno.load('user');
     await aluno.user.delete();

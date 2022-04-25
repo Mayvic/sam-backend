@@ -4,7 +4,8 @@ import Avaliacao from 'App/Models/Avaliacao'
 import Materia from 'App/Models/Materia';
 
 export default class AvaliacaosController {
-  public async index({ auth }: HttpContextContract) {
+  public async index({ auth, bouncer }: HttpContextContract) {
+    await bouncer.authorize('viewEvaluationsSelf');
     const user = auth.user!
     const aluno = await Aluno.findByOrFail('user_id', user.id)
     let avaliacoes = await Avaliacao.all()
@@ -21,7 +22,8 @@ export default class AvaliacaosController {
     return avaliacoes.map((av) => av.serialize())
   }
 
-  public async create({ auth, request, response }: HttpContextContract) {
+  public async create({ auth, bouncer, request, response }: HttpContextContract) {
+    await bouncer.authorize('createEvaluations');
     const id = auth.user!.id;
     const aluno = await Aluno.findByOrFail('user_id', id);
     const materia = await Materia.findOrFail(request.input('materiaId'));

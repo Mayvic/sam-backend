@@ -7,7 +7,8 @@ import CreateMateriaValidator from 'App/Validators/CreateMateriaValidator';
 import { randomInt } from 'crypto';
 
 export default class MateriasController {
-    public async index({ auth, request }: HttpContextContract) {
+    public async index({ auth, bouncer, request }: HttpContextContract) {
+        await bouncer.authorize('viewMaterias');
         const flagAvaliadas = request.input('avaliadas');
         const periodo = request.input('periodo');
 
@@ -38,15 +39,18 @@ export default class MateriasController {
         return materias.map((materia) => materia.serialize());
     }
 
-    public async get({ request }: HttpContextContract) {
+    public async get({ bouncer, request }: HttpContextContract) {
         const id = request.param('id');
         const materia = await Materia.findOrFail(id);
+        
+        await bouncer.authorize('viewMateriaInfo', materia);
         await materia.load('professor');
         await materia.professor.load('user');
         return materia.serialize();
     }
 
-    public async update({ request }: HttpContextContract) {
+    public async update({ bouncer, request }: HttpContextContract) {
+        await bouncer.authorize('updateMateria');
         const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
         const id = request.param('id');
         const materia = await Materia.findOrFail(id);
@@ -64,7 +68,8 @@ export default class MateriasController {
         return materia.serialize();
     }
 
-    public async create({ request }: HttpContextContract) {
+    public async create({ bouncer, request }: HttpContextContract) {
+        await bouncer.authorize('createMateria');
         const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
         const codigo_entrada = this.generateCodigo();
         const prof = await Professor.findOrFail(professor);

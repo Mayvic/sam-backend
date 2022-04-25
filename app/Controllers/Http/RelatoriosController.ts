@@ -3,7 +3,8 @@ import Avaliacao from 'App/Models/Avaliacao'
 import Materia from 'App/Models/Materia';
 
 export default class RelatoriosController {
-  public async index({ }: HttpContextContract) {
+  public async index({ bouncer }: HttpContextContract) {
+    await bouncer.authorize('viewOverallReport');
     const materias = await Materia.all();
     const avaliacoes = await Avaliacao.all();
 
@@ -17,9 +18,11 @@ export default class RelatoriosController {
     }); 
   }
 
-  public async get({ request }: HttpContextContract) {
+  public async get({ bouncer, request }: HttpContextContract) {
     const id = request.param('id');
     const materia = await Materia.findOrFail(id);
+    
+    await bouncer.authorize('viewReport', materia);
     let avaliacoes = await Avaliacao.all();
     avaliacoes = avaliacoes.filter((av) => av.materiaId === materia.id);
     return {
