@@ -15,26 +15,59 @@ export default class MateriasController {
 
         if (flagAvaliadas !== undefined) {
             const user = auth.user!;
-            const aluno = await Aluno.findByOrFail('user_id', user.id)
+            const aluno = await Aluno.findByOrFail('user_id', user.id);
             
             const avaliacoes = await Avaliacao.all();
-            const materiasAvaliadas = avaliacoes.filter((av) => av.alunoId === aluno.id).map((av) => av.materiaId)
-            materias = materias.filter((materia) => (flagAvaliadas === '0' ? !materiasAvaliadas.includes(materia.id) : materiasAvaliadas.includes(materia.id)))
+            const materiasAvaliadas = avaliacoes.filter((av) => av.alunoId === aluno.id).map((av) => av.materiaId);
+            materias = materias.filter((materia) => (flagAvaliadas === '0' ? !materiasAvaliadas.includes(materia.id) : materiasAvaliadas.includes(materia.id)));
         }
 
         if (periodo !== undefined) {
-            materias = materias.filter((materia) =>  materia.periodo === periodo)
+            materias = materias.filter((materia) =>  materia.periodo === periodo);
         }
 
-        await Promise.all(materias.map((materia) => materia.load('professor')))
-        await Promise.all(materias.map((materia) => materia.professor.load('user')))
-        return materias.map((materia) => materia.serialize())
+        if (auth.user?.type === 1) {
+            const user = auth.user!;
+            const prof = await Professor.findByOrFail('user_id', user.id);
+
+            materias = materias.filter((materia) => materia.professorId === prof.id);
+        }
+
+        await Promise.all(materias.map((materia) => materia.load('professor')));
+        await Promise.all(materias.map((materia) => materia.professor.load('user')));
+        return materias.map((materia) => materia.serialize());
+    }
+
+    public async get({ request }: HttpContextContract) {
+        const id = request.param('id');
+        const materia = await Materia.findOrFail(id);
+        await materia.load('professor');
+        await materia.professor.load('user');
+        return materia.serialize();
+    }
+
+    public async update({ request }: HttpContextContract) {
+        const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
+        const id = request.param('id');
+        const materia = await Materia.findOrFail(id);
+
+        const prof = await Professor.findOrFail(professor);
+        materia.nome = nome;
+        materia.descricao = descricao;
+        materia.codigo = codigo;
+        materia.periodo = periodo;
+        materia.professorId = professor;
+
+        await materia.save()
+        await materia.related('professor').associate(prof);
+
+        return materia.serialize();
     }
 
     public async create({ request }: HttpContextContract) {
         const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
-        const codigo_entrada = this.generateCodigo()
-        const prof = await Professor.findOrFail(professor)
+        const codigo_entrada = this.generateCodigo();
+        const prof = await Professor.findOrFail(professor);
         const materia = await Materia.create({
             nome,
             descricao,
@@ -42,20 +75,20 @@ export default class MateriasController {
             codigo_entrada,
             periodo,
             professorId: professor
-        })
+        });
 
-        await materia.related('professor').associate(prof)
+        await materia.related('professor').associate(prof);
 
-        return materia.serialize()
+        return materia.serialize();
     }
 
     private generateCodigo(size: number = 8): string {
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         let codigo = '';
         for (let i = 0; i < size; i++) {
-            const n = randomInt(chars.length)
-            codigo += chars[n]
+            const n = randomInt(chars.length);
+            codigo += chars[n];
         }
-        return codigo
+        return codigo;
     }
 }

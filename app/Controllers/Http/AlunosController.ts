@@ -5,7 +5,7 @@ import CreateAlunoValidator from 'App/Validators/CreateAlunoValidator'
 import UpdateAlunoValidator from 'App/Validators/UpdateAlunoValidator'
 
 export default class AlunosController {
-  public async create({request, response}: HttpContextContract) {
+  public async create({ request, response }: HttpContextContract) {
     const { name, document, email, password } = await request.validate(CreateAlunoValidator);
 
     const user = await User.create({
@@ -25,16 +25,17 @@ export default class AlunosController {
     return response.internalServerError({ error: 'Something bad happened.' });
   }
 
-  public async show({ auth, request }: HttpContextContract) {
-      const user = auth.user!;
-      const id = user.type == 0 ? user.id : request.param('id');
-      const aluno = await Aluno.findByOrFail('user_id', id);
-      await aluno.load('user');
+  public async show({ auth, bouncer }: HttpContextContract) {
+    await bouncer.authorize('viewStudentSelf');
+    const user = auth.user!; ''
+    const aluno = await Aluno.findByOrFail('user_id', user.id);
+    await aluno.load('user');
 
-      return aluno.serialize();
+    return aluno.serialize();
   }
 
-  public async update({ auth, request, response }: HttpContextContract) {
+  public async update({ auth, bouncer, request, response }: HttpContextContract) {
+    await bouncer.authorize('updateStudentSelf');
     const { name, document, email, password } = await request.validate(UpdateAlunoValidator);
 
     const user = auth.user!;
@@ -48,15 +49,18 @@ export default class AlunosController {
 
       await user.save();
     } else {
-      response.badRequest({errors: [{
-        rule: 'unique',
-        field: 'email',
-        message: 'email is already used.'
-      }]});
+      response.badRequest({
+        errors: [{
+          rule: 'unique',
+          field: 'email',
+          message: 'email is already used.'
+        }]
+      });
     }
   }
 
-  public async destroy({ auth }: HttpContextContract) {
+  public async destroy({ auth, bouncer }: HttpContextContract) {
+    await bouncer.authorize('destroyStudentSelf');
     const aluno = await Aluno.findOrFail(auth.user!.id);
     await aluno.load('user');
     await aluno.user.delete();

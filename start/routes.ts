@@ -31,7 +31,6 @@ Route.group(() => { // student
   Route.group(() => { // authenticated
     Route.put('/', 'AlunosController.update'); // update student (self)
     Route.get('me', 'AlunosController.show'); // get own info
-    Route.get(':id', 'AlunosController.show'); // get other's info
     Route.delete('me', 'AlunosController.destroy'); // delete student (self)
   }).middleware('auth');
 
@@ -49,6 +48,8 @@ Route.group(() => { // evaluation
 
 Route.group(() => { // materia
   Route.get('/', 'MateriasController.index'); // pegar materias
+  Route.get('/:id', 'MateriasController.get'); // pegar info de materia
+  Route.put('/', 'MateriasController.update'); // alterar materia
   Route.post('/', 'MateriasController.create'); // criar materia
 }).prefix('materias').middleware('auth');
 
