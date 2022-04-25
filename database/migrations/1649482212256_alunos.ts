@@ -7,7 +7,6 @@ export default class Alunos extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
-      table.boolean('is_valid')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

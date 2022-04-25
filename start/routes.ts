@@ -29,12 +29,10 @@ Route.post('/logout', 'LoginController.signOut').middleware('auth');
 
 Route.group(() => { // student
   Route.group(() => { // authenticated
-    Route.get('/', 'AlunosController.index'); // get all students
     Route.put('/', 'AlunosController.update'); // update student (self)
-    Route.get('me', 'AlunosController.get'); // get own info
-    Route.get(':id', 'AlunosController.get'); // get other's info
+    Route.get('me', 'AlunosController.show'); // get own info
+    Route.get(':id', 'AlunosController.show'); // get other's info
     Route.delete('me', 'AlunosController.destroy'); // delete student (self)
-    Route.post('validate/:id', 'AlunosController.validate') // validate
   }).middleware('auth');
 
   Route.post('create', 'AlunosController.create'); // create new student
@@ -58,3 +56,7 @@ Route.group(() => { // relatorio
   Route.get('/', 'RelatoriosController.index');
   Route.get(':id', 'RelatoriosController.get');
 }).prefix('report').middleware('auth');
+
+Route.group(() => { // user
+  Route.get('/', 'UsersController.index');
+}).prefix('user').middleware('auth');

@@ -5,22 +5,6 @@ import CreateAlunoValidator from 'App/Validators/CreateAlunoValidator'
 import UpdateAlunoValidator from 'App/Validators/UpdateAlunoValidator'
 
 export default class AlunosController {
-  public async index({ request }: HttpContextContract) {
-    const invalid = request.input('invalid', 0);
-    const valid = request.input('valid', 0);
-    
-    let alunos = await Aluno.all();
-
-    if (invalid !== 0) {
-      alunos = alunos.filter((aluno) => !aluno.isValid);
-    } else if (valid !== 0) {
-      alunos = alunos.filter((aluno) => aluno.isValid);
-    }
-
-    await Promise.all(alunos.map(async (aluno) => aluno.load('user')));
-    return alunos.map((aluno) => aluno.serialize());
-  }
-
   public async create({request, response}: HttpContextContract) {
     const { name, document, email, password } = await request.validate(CreateAlunoValidator);
 
@@ -46,10 +30,6 @@ export default class AlunosController {
       const id = user.type == 0 ? user.id : request.param('id');
       const aluno = await Aluno.findByOrFail('user_id', id);
       await aluno.load('user');
-      
-      if (user.type === 0) {
-        await aluno.load('materias');
-      }
 
       return aluno.serialize();
   }
@@ -80,12 +60,5 @@ export default class AlunosController {
     const aluno = await Aluno.findOrFail(auth.user!.id);
     await aluno.load('user');
     await aluno.user.delete();
-  }
-
-  public async validate({ request }: HttpContextContract) {
-    const id = request.input('id');
-    const aluno = await Aluno.findOrFail(id);
-    aluno.isValid = true;
-    aluno.save()
   }
 }

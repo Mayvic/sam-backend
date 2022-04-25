@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 
 export default class LoginController {
@@ -8,11 +7,9 @@ export default class LoginController {
 
     try {
       const token = await auth.use('api').attempt(email, password)
-      const user = await User.findBy('email', email)
       return {
         user: {
-          token,
-          type: user!.type,
+          token
         },
       }
     } catch {

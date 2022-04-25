@@ -16,10 +16,10 @@ export default class MateriasController {
         if (flagAvaliadas !== undefined) {
             const user = auth.user!;
             const aluno = await Aluno.findByOrFail('user_id', user.id)
-            await aluno.load('materias')
+            
             const avaliacoes = await Avaliacao.all();
             const materiasAvaliadas = avaliacoes.filter((av) => av.alunoId === aluno.id).map((av) => av.materiaId)
-            materias = aluno.materias.filter((materia) => (flagAvaliadas === '0' ? !materiasAvaliadas.includes(materia.id) : materiasAvaliadas.includes(materia.id)))
+            materias = materias.filter((materia) => (flagAvaliadas === '0' ? !materiasAvaliadas.includes(materia.id) : materiasAvaliadas.includes(materia.id)))
         }
 
         if (periodo !== undefined) {
