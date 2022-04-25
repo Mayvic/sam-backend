@@ -30,7 +30,7 @@ export default class AlunoSeeder extends BaseSeeder {
     ]);
 
     for (const i in users) {
-      const aluno = await Aluno.create({ isValid: true, userId: users[i].id });
+      const aluno = await Aluno.create({ userId: users[i].id });
       await aluno.related('user').associate(users[i]);
     }
   }
