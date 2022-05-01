@@ -49,7 +49,7 @@ Route.group(() => { // evaluation
 Route.group(() => { // materia
   Route.get('/', 'MateriasController.index'); // pegar materias
   Route.get('/:id', 'MateriasController.get'); // pegar info de materia
-  Route.put('/', 'MateriasController.update'); // alterar materia
+  Route.put('/:id', 'MateriasController.update'); // alterar materia
   Route.post('/', 'MateriasController.create'); // criar materia
 }).prefix('materias').middleware('auth');
 
