@@ -51,16 +51,16 @@ export default class MateriasController {
 
     public async update({ bouncer, request }: HttpContextContract) {
         await bouncer.authorize('updateMateria');
-        const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
+        const { nome, descricao, codigo, periodo, professorId } = await request.validate(CreateMateriaValidator);
         const id = request.param('id');
         const materia = await Materia.findOrFail(id);
 
-        const prof = await Professor.findOrFail(professor);
+        const prof = await Professor.findOrFail(professorId);
         materia.nome = nome;
         materia.descricao = descricao;
         materia.codigo = codigo;
         materia.periodo = periodo;
-        materia.professorId = professor;
+        materia.professorId = professorId;
 
         await materia.save()
         await materia.related('professor').associate(prof);
@@ -70,16 +70,16 @@ export default class MateriasController {
 
     public async create({ bouncer, request }: HttpContextContract) {
         await bouncer.authorize('createMateria');
-        const { nome, descricao, codigo, periodo, professor } = await request.validate(CreateMateriaValidator);
+        const { nome, descricao, codigo, periodo, professorId } = await request.validate(CreateMateriaValidator);
         const codigo_entrada = this.generateCodigo();
-        const prof = await Professor.findOrFail(professor);
+        const prof = await Professor.findOrFail(professorId);
         const materia = await Materia.create({
             nome,
             descricao,
             codigo,
             codigo_entrada,
             periodo,
-            professorId: professor
+            professorId: professorId
         });
 
         await materia.related('professor').associate(prof);

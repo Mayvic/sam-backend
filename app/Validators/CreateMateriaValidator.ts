@@ -28,7 +28,7 @@ export default class CreateMateriaValidator {
     descricao: schema.string({ trim: true }),
     codigo: schema.string({ trim: true }),
     periodo: schema.string({ trim: true }, [rules.regex(/^\d{4}\.\d$/)]),
-    professor: schema.number([rules.exists({ table: 'professors', column: 'id ' })])
+    professorId: schema.number([rules.exists({ table: 'professors', column: 'id' })])
   })
 
   /**
@@ -45,6 +45,6 @@ export default class CreateMateriaValidator {
   public messages = {
     required: '{{ field }} is required.',
     'periodo.regex': '{{ field }} must be year.semester (2021.2)',
-    'professor.exists': 'professor doesn\'t exist'
+    'professorId.exists': 'professor doesn\'t exist'
   }
 }
