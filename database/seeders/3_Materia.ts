@@ -10,31 +10,31 @@ export default class MateriaSeeder extends BaseSeeder {
         descricao: 'Programação Web',
         codigo_entrada: 'javascript',
         periodo: '2021.2',
-        professorId: 1
+        professorId: 6
       },
       {
-        nome: 'Programação Paralela',
-        codigo: 'PP001',
-        descricao: 'Programação Paralela e Distribuida',
-        codigo_entrada: 'cuda',
+        nome: 'Estrutura de Dados II',
+        codigo: 'IM001',
+        descricao: 'ED2',
+        codigo_entrada: 'arvoreB',
         periodo: '2021.2',
-        professorId: 2
+        professorId: 11
       },
       {
         nome: 'Arquitetura de Software',
         codigo: 'ES001',
         descricao: 'Arq. Soft.',
-        codigo_entrada: 'ddd',
+        codigo_entrada: 'pattern',
         periodo: '2021.2',
-        professorId: 3
+        professorId: 5
       },
       {
         nome: 'Compiladores',
         codigo: 'FH001',
         descricao: 'Compiladores',
-        codigo_entrada: 'flex/bison',
+        codigo_entrada: 'yacc',
         periodo: '2021.2',
-        professorId: 4
+        professorId: 3
       },
     ])
   }
